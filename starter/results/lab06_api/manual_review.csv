@@ -1,8 +1,8 @@
 ﻿id,kind,strategy,source_or_question,score_0_2,metadata_correct,reason
 coherence:A:nd13_2023:1:nd13_2023-p0001-fixed-4057685bc67fcc34,coherence,A,nd13_2023 PDF 1 char 450,2,,Nội dung trích xuất đầy đủ tiêu chuẩn văn bản
-coherence:B:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,B,nd13_2023 PDF 1 char 450,,,
-coherence:C:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,C,nd13_2023 PDF 1 char 450,,,
-coherence:A:nd13_2023:2:nd13_2023-p0002-fixed-72c00604bc6ae58b,coherence,A,nd13_2023 PDF 2 char 450,,,
+coherence:B:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,B,nd13_2023 PDF 1 char 450,2,,noi dung day du
+coherence:C:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,C,nd13_2023 PDF 1 char 450,2,,"noi dung day du, mach lac, giu nguyen cau truc thong tin phap ly"
+coherence:A:nd13_2023:2:nd13_2023-p0002-fixed-72c00604bc6ae58b,coherence,A,nd13_2023 PDF 2 char 450,1,,"noi dung dinh nghia ro rang, doan cuoi bi cat giua gioi tinh"
 coherence:B:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,B,nd13_2023 PDF 2 char 450,,,
 coherence:C:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,C,nd13_2023 PDF 2 char 450,,,
 coherence:A:nd13_2023:3:nd13_2023-p0003-fixed-46e1b29d599eb02a,coherence,A,nd13_2023 PDF 3 char 450,,,
