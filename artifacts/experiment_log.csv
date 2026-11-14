@@ -1,4 +1,4 @@
 strategy,chunking,chunk_size,overlap,metadata,filter,vectorizer,hypothesis,dev_hit1,dev_hit3,test_hit1,test_hit3,notes
-A,,,,,,,,,,,,
-B,,,,,,,,,,,,
-C,,,,,,,,,,,,
+A,fixed character window,900,150,"document_id, source, page, start/end_char, year, language, report_type",none,openai/text-embedding-3-small (1536d) + pgvector exact cosine,Cửa sổ cố định có overlap giữ được evidence nằm ở ranh giới chunk,7/15,11/15,2/5,5/5,"121 chunks; 39.264 token embed; được chọn theo Hit@3 dev"
+B,paragraph-based (fallback split near whitespace),max 900,0,"document_id, source, page, start/end_char, year, language, report_type",none,openai/text-embedding-3-small (1536d) + pgvector exact cosine,Chunk theo đoạn giữ trọn ý hơn nên tăng coherence và grounding,7/15,10/15,2/5,3/5,"137 chunks; 33.011 token embed; coherence không cải thiện (1,10 = A)"
+C,same chunks and vectors as B,max 900,0,"document_id, source, page, start/end_char, year, language, report_type",language (only for questions with filter),openai/text-embedding-3-small (1536d) + pgvector exact cosine,Lọc language giúp loại tài liệu sai ngôn ngữ và tăng Hit@3,7/15,10/15,2/5,3/5,"Kết quả giống hệt B: không lọc vẫn tuân thủ filter 2/2 test, 3/3 dev"

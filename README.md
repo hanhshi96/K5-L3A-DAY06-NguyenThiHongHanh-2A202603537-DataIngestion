@@ -1,3 +1,34 @@
+# Bài làm — Nguyễn Thị Hồng Hạnh (2A202603537)
+
+| Thành phần | Đường dẫn |
+|---|---|
+| Code pipeline | `starter/src/` (`run.py`, `ingestion.py`, `chunking.py`, `embeddings.py`, `store.py`, `evaluation.py`) |
+| Corpus + manifest | `starter/data/lab06_corpus/manifest.json` (bản sao: `data/manifest.json`); PDF không commit, tải theo URL trong manifest |
+| Benchmark 20 câu (15 dev / 5 test) | `starter/benchmark.json` (bản sao: `benchmark/questions.json`) |
+| Kết quả, trace, chỉ số | `starter/results/lab06_api/` (`metrics.json`, `traces_dev.json`, `traces_test.json`, `ingestion_stats.json`, `runtime.json`) |
+| Nhãn thủ công (90 dòng) | `starter/results/lab06_api/manual_review.csv`; công cụ chấm `starter/scripts/label_review.py` |
+| Experiment log | `artifacts/experiment_log.csv` |
+| Báo cáo | `report/individual/2A202603537_NguyenThiHongHanh.md` |
+
+**Chạy lại** (từ `starter/`, cần Docker, Python 3.11+, `OPENAI_API_KEY` trong `.env`):
+
+```bash
+cd starter
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env            # điền OPENAI_API_KEY
+docker compose up -d
+# tải 2 PDF theo URL trong data/lab06_corpus/manifest.json vào data/lab06_corpus/ (nd13_2023.pdf, attention_2017.pdf)
+python -u -m src.run --check
+python -u -m src.run --split dev
+python -u -m src.run --split test
+python3 scripts/label_review.py --summary
+```
+
+Embedding: OpenAI `text-embedding-3-small` (1536 chiều) · Vector store: PostgreSQL + pgvector, exact cosine · Chi phí: 72.275 token embed tài liệu (≈0,0015 USD ước tính).
+
+---
+
 # Day 06 · Data Ingestion Engineering
 
 **Lab cá nhân** · **4 giờ** · **Dữ liệu tự chọn**
