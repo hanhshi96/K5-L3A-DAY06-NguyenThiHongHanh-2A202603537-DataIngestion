@@ -3,89 +3,89 @@ coherence:A:nd13_2023:1:nd13_2023-p0001-fixed-4057685bc67fcc34,coherence,A,nd13_
 coherence:B:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,B,nd13_2023 PDF 1 char 450,2,,noi dung day du
 coherence:C:nd13_2023:1:nd13_2023-p0001-paragraph-f32a9bc4310847b9,coherence,C,nd13_2023 PDF 1 char 450,2,,"noi dung day du, mach lac, giu nguyen cau truc thong tin phap ly"
 coherence:A:nd13_2023:2:nd13_2023-p0002-fixed-72c00604bc6ae58b,coherence,A,nd13_2023 PDF 2 char 450,1,,"noi dung dinh nghia ro rang, doan cuoi bi cat giua gioi tinh"
-coherence:B:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,B,nd13_2023 PDF 2 char 450,,,
-coherence:C:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,C,nd13_2023 PDF 2 char 450,,,
-coherence:A:nd13_2023:3:nd13_2023-p0003-fixed-46e1b29d599eb02a,coherence,A,nd13_2023 PDF 3 char 450,,,
-coherence:B:nd13_2023:3:nd13_2023-p0003-paragraph-3ba729037c91c7b3,coherence,B,nd13_2023 PDF 3 char 450,,,
-coherence:C:nd13_2023:3:nd13_2023-p0003-paragraph-3ba729037c91c7b3,coherence,C,nd13_2023 PDF 3 char 450,,,
-coherence:A:nd13_2023:4:nd13_2023-p0004-fixed-13b48dad9e572ec0,coherence,A,nd13_2023 PDF 4 char 450,,,
-coherence:B:nd13_2023:4:nd13_2023-p0004-paragraph-3a464620c495ddc9,coherence,B,nd13_2023 PDF 4 char 450,,,
-coherence:C:nd13_2023:4:nd13_2023-p0004-paragraph-3a464620c495ddc9,coherence,C,nd13_2023 PDF 4 char 450,,,
-coherence:A:nd13_2023:5:nd13_2023-p0005-fixed-5f9fa1ce598b209d,coherence,A,nd13_2023 PDF 5 char 450,,,
-coherence:B:nd13_2023:5:nd13_2023-p0005-paragraph-0222a1d9957c31a5,coherence,B,nd13_2023 PDF 5 char 450,,,
-coherence:C:nd13_2023:5:nd13_2023-p0005-paragraph-0222a1d9957c31a5,coherence,C,nd13_2023 PDF 5 char 450,,,
-coherence:A:attention_2017:1:attention_2017-p0001-fixed-d44dc19c80fab5b0,coherence,A,attention_2017 PDF 1 char 450,,,
-coherence:B:attention_2017:1:attention_2017-p0001-paragraph-ec6ec6c95446c857,coherence,B,attention_2017 PDF 1 char 450,,,
-coherence:C:attention_2017:1:attention_2017-p0001-paragraph-ec6ec6c95446c857,coherence,C,attention_2017 PDF 1 char 450,,,
-coherence:A:attention_2017:2:attention_2017-p0002-fixed-a6bf9730a6ebd84a,coherence,A,attention_2017 PDF 2 char 450,,,
-coherence:B:attention_2017:2:attention_2017-p0002-paragraph-eeab07cc5f793332,coherence,B,attention_2017 PDF 2 char 450,,,
-coherence:C:attention_2017:2:attention_2017-p0002-paragraph-eeab07cc5f793332,coherence,C,attention_2017 PDF 2 char 450,,,
-coherence:A:attention_2017:3:attention_2017-p0003-fixed-973cd5442a2f7f73,coherence,A,attention_2017 PDF 3 char 450,,,
-coherence:B:attention_2017:3:attention_2017-p0003-paragraph-f5da5b0d67744a67,coherence,B,attention_2017 PDF 3 char 450,,,
-coherence:C:attention_2017:3:attention_2017-p0003-paragraph-f5da5b0d67744a67,coherence,C,attention_2017 PDF 3 char 450,,,
-coherence:A:attention_2017:4:attention_2017-p0004-fixed-f3aaacbf4c1dac63,coherence,A,attention_2017 PDF 4 char 450,,,
-coherence:B:attention_2017:4:attention_2017-p0004-paragraph-86687b6f0314ef85,coherence,B,attention_2017 PDF 4 char 450,,,
-coherence:C:attention_2017:4:attention_2017-p0004-paragraph-86687b6f0314ef85,coherence,C,attention_2017 PDF 4 char 450,,,
-coherence:A:attention_2017:5:attention_2017-p0005-fixed-d2cabfbc285e14a3,coherence,A,attention_2017 PDF 5 char 450,,,
-coherence:B:attention_2017:5:attention_2017-p0005-paragraph-9d9f4bb040124e38,coherence,B,attention_2017 PDF 5 char 450,,,
-coherence:C:attention_2017:5:attention_2017-p0005-paragraph-9d9f4bb040124e38,coherence,C,attention_2017 PDF 5 char 450,,,
-grounding:A:Q08,grounding,A,Q08,,,
-metadata:A:Q08:1,metadata,A,Q08,,,
-metadata:A:Q08:2,metadata,A,Q08,,,
-metadata:A:Q08:3,metadata,A,Q08,,,
-grounding:B:Q08,grounding,B,Q08,,,
-metadata:B:Q08:1,metadata,B,Q08,,,
-metadata:B:Q08:2,metadata,B,Q08,,,
-metadata:B:Q08:3,metadata,B,Q08,,,
-grounding:C:Q08,grounding,C,Q08,,,
-metadata:C:Q08:1,metadata,C,Q08,,,
-metadata:C:Q08:2,metadata,C,Q08,,,
-metadata:C:Q08:3,metadata,C,Q08,,,
-grounding:A:Q09,grounding,A,Q09,,,
-metadata:A:Q09:1,metadata,A,Q09,,,
-metadata:A:Q09:2,metadata,A,Q09,,,
-metadata:A:Q09:3,metadata,A,Q09,,,
-grounding:B:Q09,grounding,B,Q09,,,
-metadata:B:Q09:1,metadata,B,Q09,,,
-metadata:B:Q09:2,metadata,B,Q09,,,
-metadata:B:Q09:3,metadata,B,Q09,,,
-grounding:C:Q09,grounding,C,Q09,,,
-metadata:C:Q09:1,metadata,C,Q09,,,
-metadata:C:Q09:2,metadata,C,Q09,,,
-metadata:C:Q09:3,metadata,C,Q09,,,
-grounding:A:Q10,grounding,A,Q10,,,
-metadata:A:Q10:1,metadata,A,Q10,,,
-metadata:A:Q10:2,metadata,A,Q10,,,
-metadata:A:Q10:3,metadata,A,Q10,,,
-grounding:B:Q10,grounding,B,Q10,,,
-metadata:B:Q10:1,metadata,B,Q10,,,
-metadata:B:Q10:2,metadata,B,Q10,,,
-metadata:B:Q10:3,metadata,B,Q10,,,
-grounding:C:Q10,grounding,C,Q10,,,
-metadata:C:Q10:1,metadata,C,Q10,,,
-metadata:C:Q10:2,metadata,C,Q10,,,
-metadata:C:Q10:3,metadata,C,Q10,,,
-grounding:A:Q19,grounding,A,Q19,,,
-metadata:A:Q19:1,metadata,A,Q19,,,
-metadata:A:Q19:2,metadata,A,Q19,,,
-metadata:A:Q19:3,metadata,A,Q19,,,
-grounding:B:Q19,grounding,B,Q19,,,
-metadata:B:Q19:1,metadata,B,Q19,,,
-metadata:B:Q19:2,metadata,B,Q19,,,
-metadata:B:Q19:3,metadata,B,Q19,,,
-grounding:C:Q19,grounding,C,Q19,,,
-metadata:C:Q19:1,metadata,C,Q19,,,
-metadata:C:Q19:2,metadata,C,Q19,,,
-metadata:C:Q19:3,metadata,C,Q19,,,
-grounding:A:Q20,grounding,A,Q20,,,
-metadata:A:Q20:1,metadata,A,Q20,,,
-metadata:A:Q20:2,metadata,A,Q20,,,
-metadata:A:Q20:3,metadata,A,Q20,,,
-grounding:B:Q20,grounding,B,Q20,,,
-metadata:B:Q20:1,metadata,B,Q20,,,
-metadata:B:Q20:2,metadata,B,Q20,,,
-metadata:B:Q20:3,metadata,B,Q20,,,
-grounding:C:Q20,grounding,C,Q20,,,
-metadata:C:Q20:1,metadata,C,Q20,,,
-metadata:C:Q20:2,metadata,C,Q20,,,
-metadata:C:Q20:3,metadata,C,Q20,,,
+coherence:B:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,B,nd13_2023 PDF 2 char 450,1,,"Các định nghĩa rõ ràng, nhưng nội dung cuối bị cắt giữa danh mục dữ liệu cá nhân cơ bản."
+coherence:C:nd13_2023:2:nd13_2023-p0002-paragraph-3ba9cf0f060c8027,coherence,C,nd13_2023 PDF 2 char 450,1,,nội dung cuối bị cắt giữa danh mục dữ liệu cá nhân cơ bản
+coherence:A:nd13_2023:3:nd13_2023-p0003-fixed-46e1b29d599eb02a,coherence,A,nd13_2023 PDF 3 char 450,1,,"Định nghĩa và các ví dụ rõ ràng, nhưng danh mục dữ liệu nhạy cảm bị cắt ở mục h)."
+coherence:B:nd13_2023:3:nd13_2023-p0003-paragraph-3ba729037c91c7b3,coherence,B,nd13_2023 PDF 3 char 450,1,,"Nội dung định nghĩa rõ ràng, nhưng mục h) bị cắt giữa câu, chưa hoàn chỉnh"
+coherence:C:nd13_2023:3:nd13_2023-p0003-paragraph-3ba729037c91c7b3,coherence,C,nd13_2023 PDF 3 char 450,1,,"Nội dung định nghĩa rõ ràng, nhưng mục h) bị cắt giữa câu, chưa hoàn chỉnh."
+coherence:A:nd13_2023:4:nd13_2023-p0004-fixed-13b48dad9e572ec0,coherence,A,nd13_2023 PDF 4 char 450,1,,"Các định nghĩa rõ ràng, nhưng khoản 13 bị cắt giữa câu, thiếu phần giải thích hoàn chỉnh."
+coherence:B:nd13_2023:4:nd13_2023-p0004-paragraph-3a464620c495ddc9,coherence,B,nd13_2023 PDF 4 char 450,1,,"Các định nghĩa 8–12 đầy đủ, nhưng khoản 13 bị cắt giữa câu, chưa trọn ý."
+coherence:C:nd13_2023:4:nd13_2023-p0004-paragraph-3a464620c495ddc9,coherence,C,nd13_2023 PDF 4 char 450,1,,"Các định nghĩa 8–12 đầy đủ, nhưng khoản 13 bị cắt giữa câu, chưa trọn ý."
+coherence:A:nd13_2023:5:nd13_2023-p0005-fixed-5f9fa1ce598b209d,coherence,A,nd13_2023 PDF 5 char 450,1,,"Các nguyên tắc được trình bày rõ ràng, nhưng khoản 6 bị cắt giữa câu."
+coherence:B:nd13_2023:5:nd13_2023-p0005-paragraph-0222a1d9957c31a5,coherence,B,nd13_2023 PDF 5 char 450,1,,Bị cắt giữa
+coherence:C:nd13_2023:5:nd13_2023-p0005-paragraph-0222a1d9957c31a5,coherence,C,nd13_2023 PDF 5 char 450,1,,Bị cắt giữa câu
+coherence:A:attention_2017:1:attention_2017-p0001-fixed-d44dc19c80fab5b0,coherence,A,attention_2017 PDF 1 char 450,1,,"Có tiêu đề, tác giả và phần tóm tắt, nhưng câu cuối bị cắt giữa từ “Transformer”."
+coherence:B:attention_2017:1:attention_2017-p0001-paragraph-ec6ec6c95446c857,coherence,B,attention_2017 PDF 1 char 450,1,,"Tiêu đề, tác giả và nội dung tóm tắt rõ ràng, nhưng câu cuối bị cắt, thiếu phần mô tả kiến trúc đề xuất."
+coherence:C:attention_2017:1:attention_2017-p0001-paragraph-ec6ec6c95446c857,coherence,C,attention_2017 PDF 1 char 450,1,,"Tiêu đề, tác giả và nội dung tóm tắt rõ ràng, nhưng câu cuối bị cắt, thiếu phần mô tả kiến trúc đề xuất."
+coherence:A:attention_2017:2:attention_2017-p0002-fixed-a6bf9730a6ebd84a,coherence,A,attention_2017 PDF 2 char 450,1,,"Nội dung giới thiệu rõ bối cảnh nghiên cứu, nhưng câu cuối bị cắt giữa ý."
+coherence:B:attention_2017:2:attention_2017-p0002-paragraph-eeab07cc5f793332,coherence,B,attention_2017 PDF 2 char 450,1,,"Nội dung trình bày rõ về RNN và hạn chế song song hóa, nhưng câu cuối bị cắt, thiếu ý hoàn chỉnh."
+coherence:C:attention_2017:2:attention_2017-p0002-paragraph-eeab07cc5f793332,coherence,C,attention_2017 PDF 2 char 450,1,,Thiếu ý hoàn chỉnh
+coherence:A:attention_2017:3:attention_2017-p0003-fixed-973cd5442a2f7f73,coherence,A,attention_2017 PDF 3 char 450,1,,câu cuối bị cắt giữa ý
+coherence:B:attention_2017:3:attention_2017-p0003-paragraph-f5da5b0d67744a67,coherence,B,attention_2017 PDF 3 char 450,1,,"câu cuối bị cắt, thiếu phần hoàn chỉnh."
+coherence:C:attention_2017:3:attention_2017-p0003-paragraph-f5da5b0d67744a67,coherence,C,attention_2017 PDF 3 char 450,1,,"câu cuối bị cắt, thiếu phần hoàn chỉnh."
+coherence:A:attention_2017:4:attention_2017-p0004-fixed-f3aaacbf4c1dac63,coherence,A,attention_2017 PDF 4 char 450,1,,"câu cuối bị cắt, thiếu phần hoàn chỉnh."
+coherence:B:attention_2017:4:attention_2017-p0004-paragraph-86687b6f0314ef85,coherence,B,attention_2017 PDF 4 char 450,1,,"phần công thức cuối bị cắt, chưa hoàn chỉnh"
+coherence:C:attention_2017:4:attention_2017-p0004-paragraph-86687b6f0314ef85,coherence,C,attention_2017 PDF 4 char 450,1,,"phần công thức cuối bị cắt, chưa hoàn chỉnh"
+coherence:A:attention_2017:5:attention_2017-p0005-fixed-d2cabfbc285e14a3,coherence,A,attention_2017 PDF 5 char 450,1,,"Nội dung giải thích Multi-Head Attention đầy đủ, nhưng phần liệt kê ứng dụng bị cắt giữa chừng."
+coherence:B:attention_2017:5:attention_2017-p0005-paragraph-9d9f4bb040124e38,coherence,B,attention_2017 PDF 5 char 450,1,,chưa có nội dung chi tiết
+coherence:C:attention_2017:5:attention_2017-p0005-paragraph-9d9f4bb040124e38,coherence,C,attention_2017 PDF 5 char 450,1,,chưa có nội dung chi tiết
+grounding:A:Q08,grounding,A,Q08,2,,băng chứng rõ ràng
+metadata:A:Q08:1,metadata,A,Q08,,yes,du thong tin
+metadata:A:Q08:2,metadata,A,Q08,,yes,"Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: Metadata đúng, nhưng chunk không chứa nội dung chính về thời hạn 72 giờ và cơ quan nhận thông báo"
+metadata:A:Q08:3,metadata,A,Q08,,yes,"Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: Metadata đúng, nhưng nội dung chunk thuộc Điều 13, không liên quan đến câu hỏi về thông báo vi phạm tại Điều 23."
+grounding:B:Q08,grounding,B,Q08,2,,"Chunk chứa đầy đủ bằng chứng tại Điều 23, khoản 1, xác định rõ cơ quan nhận thông báo, thời hạn 72 giờ và yêu cầu giải trình khi thông báo muộn."
+metadata:B:Q08:1,metadata,B,Q08,,yes,"Metadata khớp manifest, đúng trang 18, năm 2023 và ngôn ngữ tiếng Việt; nội dung phù hợp với câu hỏi."
+metadata:B:Q08:2,metadata,B,Q08,,yes,Metadata đủ và đúng.
+metadata:B:Q08:3,metadata,B,Q08,,yes,"Nguồn, năm, ngôn ngữ đều khớp. Số “31” là số trang Công báo, không phải trang PDF"
+grounding:C:Q08,grounding,C,Q08,2,,"Chunk chứa đầy đủ bằng chứng tại Điều 23, khoản 1, xác định rõ cơ quan nhận thông báo, thời hạn 72 giờ và yêu cầu giải trình khi thông báo muộn."
+metadata:C:Q08:1,metadata,C,Q08,,yes,"Metadata khớp manifest, đúng trang 18, năm 2023 và ngôn ngữ tiếng Việt; nội dung phù hợp với câu hỏi."
+metadata:C:Q08:2,metadata,C,Q08,,yes,Metadata đủ và đúng.
+metadata:C:Q08:3,metadata,C,Q08,,yes,"Nguồn, năm, ngôn ngữ đều khớp. Số “31” là số trang Công báo, không phải trang PDF"
+grounding:A:Q09,grounding,A,Q09,2,,"Chunk [2] (trang 23, Điều 26 khoản 1) chứa nguyên văn đáp án và khớp GOLD."
+metadata:A:Q09:1,metadata,A,Q09,,yes,"Nguồn, trang 5, năm và ngôn ngữ đều khớp; “7” là số trang Công báo."
+metadata:A:Q09:2,metadata,A,Q09,,yes,"Nguồn, trang 23, năm và ngôn ngữ đều khớp; “25” là số trang Công báo."
+metadata:A:Q09:3,metadata,A,Q09,,yes,Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: bị cắt mất thông tin
+grounding:B:Q09,grounding,B,Q09,1,,thông tin bị cắt
+metadata:B:Q09:1,metadata,B,Q09,,yes,Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: không đủ thông tin
+metadata:B:Q09:2,metadata,B,Q09,,yes,"Chunk là trang đầu NĐ 13/2023/NĐ-CP. Nguồn, năm, ngôn ngữ khớp; “3” là số trang Công báo."
+metadata:B:Q09:3,metadata,B,Q09,,yes,"Khớp chunk trang 5 trước đó (Điều 3). Nguồn, năm, ngôn ngữ đều khớp."
+grounding:C:Q09,grounding,C,Q09,1,,thông tin bị cắt
+metadata:C:Q09:1,metadata,C,Q09,,yes,Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: không đủ thông tin
+metadata:C:Q09:2,metadata,C,Q09,,yes,"Chunk là trang đầu NĐ 13/2023/NĐ-CP. Nguồn, năm, ngôn ngữ khớp; “3” là số trang Công báo."
+metadata:C:Q09:3,metadata,C,Q09,,yes,"Khớp chunk trang 5 trước đó (Điều 3). Nguồn, năm, ngôn ngữ đều khớp."
+grounding:A:Q10,grounding,A,Q10,2,,nguyên văn và khớp đáp án
+metadata:A:Q10:1,metadata,A,Q10,,yes,Metadata đúng (source/page/year/language khớp). Ghi chú nội dung: bị cắt mất thông tin
+metadata:A:Q10:2,metadata,A,Q10,,yes,"Trang đầu NĐ 13/2023, nguồn/năm/ngôn ngữ khớp."
+metadata:A:Q10:3,metadata,A,Q10,,yes,du thong tin
+grounding:B:Q10,grounding,B,Q10,2,,đầy đủ thông tin
+metadata:B:Q10:1,metadata,B,Q10,,yes,đủ thông tin
+metadata:B:Q10:2,metadata,B,Q10,,yes,khớp thông tin
+metadata:B:Q10:3,metadata,B,Q10,,yes,đủ thông tin
+grounding:C:Q10,grounding,C,Q10,2,,đầy đủ thông tin
+metadata:C:Q10:1,metadata,C,Q10,,yes,đủ thông tin
+metadata:C:Q10:2,metadata,C,Q10,,yes,khớp thông tin
+metadata:C:Q10:3,metadata,C,Q10,,yes,đủ thông tin
+grounding:A:Q19,grounding,A,Q19,2,,"Chunk [2] (trang 8) chứa nguyên văn đáp án: label smoothing 0.1, làm giảm perplexity nhưng tăng accuracy/BLEU. Khớp GOLD."
+metadata:A:Q19:1,metadata,A,Q19,,yes,khớp source
+metadata:A:Q19:2,metadata,A,Q19,,yes,khớp source
+metadata:A:Q19:3,metadata,A,Q19,,yes,đúng và đủ
+grounding:B:Q19,grounding,B,Q19,2,,"Chunk [2] (trang 8) chứa nguyên văn đáp án, khớp GOLD."
+metadata:B:Q19:1,metadata,B,Q19,,yes,đầy đủ thông tin
+metadata:B:Q19:2,metadata,B,Q19,,yes,đúng trang khớp thông tin
+metadata:B:Q19:3,metadata,B,Q19,,yes,khớp
+grounding:C:Q19,grounding,C,Q19,2,,"Chunk [2] (trang 8) chứa nguyên văn đáp án, khớp GOLD."
+metadata:C:Q19:1,metadata,C,Q19,,yes,đầy đủ thông tin
+metadata:C:Q19:2,metadata,C,Q19,,yes,đúng trang khớp thông tin
+metadata:C:Q19:3,metadata,C,Q19,,yes,khớp
+grounding:A:Q20,grounding,A,Q20,2,,"Chunk [3] (trang 8) ghi rõ 5 checkpoint cuối, mỗi checkpoint ghi cách nhau 10 phút. Khớp GOLD."
+metadata:A:Q20:1,metadata,A,Q20,,yes,khớp source
+metadata:A:Q20:2,metadata,A,Q20,,yes,đúng và đủ thông tin
+metadata:A:Q20:3,metadata,A,Q20,,yes,"Nguồn, trang 8, năm 2017 và ngôn ngữ en đều khớp."
+grounding:B:Q20,grounding,B,Q20,1,,bị cắt câu
+metadata:B:Q20:1,metadata,B,Q20,,yes,đầy đủ thông tin
+metadata:B:Q20:2,metadata,B,Q20,,yes,"Nguồn, năm và ngôn ngữ khớp. Số “9” ở chân chunk cũng khớp page=9."
+metadata:B:Q20:3,metadata,B,Q20,,yes,source và chunk đều khớp
+grounding:C:Q20,grounding,C,Q20,1,,bị cắt câu
+metadata:C:Q20:1,metadata,C,Q20,,yes,đầy đủ thông tin
+metadata:C:Q20:2,metadata,C,Q20,,yes,"Nguồn, năm và ngôn ngữ khớp. Số “9” ở chân chunk cũng khớp page=9."
+metadata:C:Q20:3,metadata,C,Q20,,yes,source và chunk đều khớp

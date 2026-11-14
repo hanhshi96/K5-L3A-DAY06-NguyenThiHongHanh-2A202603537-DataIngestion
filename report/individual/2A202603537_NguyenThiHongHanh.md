@@ -1,134 +1,112 @@
-# Lab 06 — Đánh giá ba chiến lược ingestion và truy xuất
+# Báo cáo cá nhân — Day 6
 
-**Corpus:** Nghị định 13/2023/NĐ-CP và *Attention Is All You Need*.  
-**Kết luận từ dev:** chọn cấu hình A theo quy tắc ưu tiên Evidence Hit@3, rồi Hit@1, rồi số chunk thấp hơn.  
-**Trạng thái đánh giá:** số đo retrieval và tài nguyên lấy từ lần chạy thật. Nhãn coherence, grounding và rà metadata dưới đây do ChatGPT đề xuất sau khi đọc evidence và đối chiếu PDF; **người học chưa xác nhận, không phải chấm thủ công độc lập**. File `manual_review_ai_suggested.csv` ghi phương pháp và trạng thái từng dòng.
+**Học viên:** Nguyễn Thị Hồng Hạnh · **MSSV:** 2A202603537 · **Lớp:** L3A
+**Corpus:** Nghị định 13/2023/NĐ-CP và *Attention Is All You Need* · **Chiến lược chọn:** A (chọn trên dev)
 
-## 1. Dữ liệu và phương pháp
+## Dữ liệu và pipeline
 
-| Tài liệu | Trang PDF sử dụng | Số trang | Metadata ngôn ngữ |
-|---|---|---:|---|
-| Nghị định 13/2023/NĐ-CP | 1–29 | 29 | `vi` |
-| Attention Is All You Need | 1–9 | 9 | `en` |
-| Tổng | | **38** | |
+- **Chủ đề, nguồn/quyền, số trang và quy tắc tính trang:** corpus song ngữ gồm 2 tài liệu, tổng **38 trang nội dung**. Số trang tính theo **trang vật lý trong PDF** (vd. trang PDF 29 của Nghị định 13 mang số trang Công báo 31).
 
-Đếm trang có nội dung, không lấy các trang biểu mẫu trống và trang chỉ có tài liệu tham khảo. Trang đầu hai tài liệu vẫn chứa nội dung quy định hoặc abstract, không chỉ là bìa. Số trang gold là **trang vật lý trong PDF**; chẳng hạn ND13 PDF 29 được in số Công báo 31. Manifest lưu nguồn, checksum, danh sách trang và số ký tự.
+  | Tài liệu | Nguồn | Trang dùng | Số trang | Trang loại |
+  |---|---|---|---:|---|
+  | Nghị định 13/2023/NĐ-CP, `vi`, 2023 | [Công báo](https://congbao.cdnchinhphu.vn/CongBaoCP/VanBan/2023/4/39228/44543-1-2023685-68613-2023-nd-cp.pdf) | 1–29 | 29 | 30–37 (biểu mẫu) |
+  | Attention Is All You Need, `en`, 2017 | [arXiv 1706.03762](https://arxiv.org/abs/1706.03762) | 1–9 | 9 | 10–15 (tài liệu tham khảo, phụ lục hình) |
+  | **Tổng** | | | **38** | |
 
-Bộ benchmark gồm 20 câu, được chuẩn bị với AI hỗ trợ và cố định trước truy xuất: 15 dev và 5 test. Có 3 câu dev và 2 câu test cung cấp filter ngôn ngữ. Gold evidence được kiểm tra tồn tại ở đúng trang sau chuẩn hóa. Filter là phạm vi được nêu trong câu hỏi trước truy xuất, không được suy từ đáp án. Chia tập trong cùng hai tài liệu, chưa bảo đảm độc lập theo chủ đề.
+  Trang đầu của cả hai tài liệu có nội dung thật (phần căn cứ của Nghị định, abstract của bài báo), không chỉ là bìa. Quyền sử dụng: Nghị định là văn bản quy phạm pháp luật, không thuộc đối tượng bảo hộ quyền tác giả. Bài báo dùng theo license arXiv cho mục đích học thuật, có ghi nguồn, **không phân phối lại PDF**; PDF nằm trong `.gitignore`, manifest lưu URL và sha256 để tải lại đúng bản. Nghị định 13 chỉ được dùng như một snapshot lịch sử, không dùng để tư vấn pháp luật hiện hành. Manifest: `starter/data/lab06_corpus/manifest.json`.
+- **Chuẩn hóa, lỗi và giới hạn:** đọc PDF bằng `pypdf`, chuẩn hóa Unicode NFC và khoảng trắng. Mỗi trang được ghi các cờ `has_text`, `low_text`, `extraction_status`. Không có trang rỗng hoặc lỗi trong 38 trang đã chọn. Các giới hạn còn lại: trích xuất tiếng Việt đôi khi tách chữ (vd. "trách nhi ệm"); chưa loại header Công báo; công thức toán bị cắt; PDF không giữ dòng trống ổn định nên việc tách đoạn chưa chính xác.
+- **Embedding và vector store:** OpenAI `text-embedding-3-small`, **1536 chiều**, dùng cùng model cho query và document; không dùng vector giả. Input giới hạn 6000 byte UTF-8, vượt giới hạn thì báo lỗi thay vì âm thầm cắt. Vector store: PostgreSQL + pgvector (`docker-compose.yml`, `init.sql`), bảng `lab06_api_chunks`, tìm kiếm **exact cosine** top-3. Phiên bản thư viện/backend xem `starter/results/lab06_api/runtime.json`. Chi phí: **72.275 token** embedding tài liệu ở lần ingest đầu (A 39.264 + B 33.011), ước tính khoảng 0,0015 USD theo đơn giá công bố 0,02 USD/1 triệu token. Con số này chưa gồm token embedding câu hỏi và chưa đối chiếu hóa đơn.
+- **Metadata:** các trường bắt buộc là `chunk_id` (ổn định), `document_id`, `source`, `page`, `start_char`/`end_char`. Trường lọc bổ sung: `language` (`vi`/`en`), `year` (2023/2017), `report_type` (`legal_decree`/`paper`); giá trị lấy từ manifest và đã kiểm chứng với nguồn. Chọn `language` làm trường lọc vì người dùng thường nêu rõ ngôn ngữ hoặc văn bản cần hỏi ngay từ đầu, trước khi truy xuất.
 
-Pipeline: đọc bằng pypdf → chuẩn hóa Unicode/whitespace → chia chunk → OpenAI embedding → PostgreSQL/pgvector → exact cosine top-3 → chấm tự động và lưu trace. Model `text-embedding-3-small`, cấu hình rõ **1536 chiều**, dùng giống nhau cho query và document. Gọi API qua thư viện chuẩn Python, không dùng vector giả. Có giới hạn input 6000 UTF-8 bytes, báo lỗi thay vì âm thầm cắt nội dung. Token thực tế do API trả về; không gọi đây là chunking theo token.
+## Cấu hình và benchmark
 
-| Cấu hình | Chunking | Truy xuất |
-|---|---|---|
-| A | Cửa sổ 900 ký tự, overlap 150 | Không filter |
-| B | Gom đoạn, tối đa 900 ký tự; đoạn quá dài tách gần whitespace | Không filter |
-| C | Dùng đúng chunk và vector của B | Áp dụng filter khi câu hỏi cung cấp; câu khác không filter |
+- **A / B / C:**
 
-Bảng lưu là `lab06_api_chunks`. Mỗi chunk có ID ổn định, document_id, source, page, metadata và ranh giới ký tự. Upsert toàn bộ snapshot từng tài liệu để thay chunk cũ; runner dọn tài liệu không còn trong snapshot. Bảng `lab06_chunks` cũ không bị sửa.
+  | Cấu hình | Chunking | Truy xuất |
+  |---|---|---|
+  | A | Cửa sổ cố định 900 ký tự, overlap 150 | Không filter |
+  | B | Gom theo đoạn, tối đa 900 ký tự; đoạn quá dài tách gần khoảng trắng | Không filter |
+  | C | **Dùng đúng chunk và vector của B** (đã kiểm tra: cùng 137 chunk, text giống hệt) | Filter `language` khi câu hỏi có filter; câu không có filter chạy như B |
 
-## 2. Độ chính xác truy xuất
+  B–C chỉ khác nhau ở bước lọc; A–B chỉ khác nhau ở cách chunk. Cả ba dùng cùng model, cùng store, cùng benchmark.
+- **Benchmark:** 20 câu (`starter/benchmark.json`), chia **15 dev / 5 test**, khóa trước khi truy xuất (`experiment_lock.json`). Có 5 câu có filter `language`: Q01, Q11, Q15 thuộc dev và **Q08, Q19 thuộc test**. Mỗi câu có `expected_answer`, `gold_source_id`, `gold_page`, `evidence_quote`, kèm `alternative_gold` nếu có. Evidence được kiểm tra là có mặt ở đúng trang sau chuẩn hóa. Giá trị filter được nêu sẵn trong câu hỏi trước khi truy xuất, không suy ra từ đáp án. Benchmark soạn với hỗ trợ của AI và do tác giả kiểm tra lại. Dev và test chia trong cùng hai tài liệu, nên có nguy cơ rò rỉ chủ đề.
+- **Tiêu chí chọn chiến lược (chốt trước khi xem test):** Evidence Hit@3 trên dev, rồi đến Hit@1 trên dev, cuối cùng là số chunk ít hơn.
 
-Một hit tự động phải đúng document/page và chứa **toàn bộ gold evidence trong một chunk**. So khớp chuẩn hóa NFC và bỏ whitespace nhưng giữ chữ, dấu và nội dung. Có hỗ trợ alternative gold nếu khai báo. Không tính hợp evidence của nhiều chunk vào chỉ số Hit@3 bắt buộc. Phép so khớp này có thể bỏ sót bằng chứng tương đương chưa khai báo; không xem nó là thước đo ngữ nghĩa tuyệt đối.
+## Kết quả
 
-| Cấu hình | Dev Hit@1 | Dev Evidence Hit@3 | Test Hit@1 | Test Evidence Hit@3 |
-|---|---:|---:|---:|---:|
-| **A** | 7/15 (46,7%) | **11/15 (73,3%)** | 2/5 (40,0%) | **5/5 (100,0%)** |
-| B | 7/15 (46,7%) | 10/15 (66,7%) | 2/5 (40,0%) | 3/5 (60,0%) |
-| C | 7/15 (46,7%) | 10/15 (66,7%) | 2/5 (40,0%) | 3/5 (60,0%) |
+| Strategy | Split | Hit@1 (n/N) | Evidence Hit@3 (n/N) | Chunk count | Thời gian chunk + embed | Chi phí (token embed) |
+|---|---|---|---|---|---|---|
+| A | dev | 7/15 | **11/15** | 121 | 4,005 s | 39.264 |
+| A | test | 2/5 | **5/5** | 121 | | |
+| B | dev | 7/15 | 10/15 | 137 | 5,025 s | 33.011 |
+| B | test | 2/5 | 3/5 | 137 | | |
+| C | dev | 7/15 | 10/15 | 137 (dùng lại B) | ~0 s (tái sử dụng vector B) | 0 |
+| C | test | 2/5 | 3/5 | 137 (dùng lại B) | | |
 
-A hơn B/C một câu Hit@3 trên dev, là cơ sở chọn cấu hình theo quy tắc đã khai báo. Kết quả test xác nhận lợi thế trên mẫu nhỏ này, nhưng không dùng để chỉnh lại cấu hình. Hit@3 100% chỉ nghĩa là top-3 có chunk đạt gold cho 5 câu test; không phải độ chính xác câu trả lời LLM. Không có bước sinh câu trả lời được đánh giá trong thí nghiệm này.
+Một lượt được tính là hit khi chunk đúng tài liệu/trang gold và chứa **toàn bộ** evidence trong một chunk (so khớp sau chuẩn hóa NFC; có tính `alternative_gold`). Bằng chứng nằm rải trên nhiều chunk không được tính. Hit@3 đo khả năng truy xuất evidence, không phải độ chính xác câu trả lời của LLM.
 
-## 3. Tính mạch lạc của chunk — nhãn AI đề xuất
+| Strategy | Coherence trung bình /2 (n) | Metadata đủ và đúng (n/N) | Filter tuân thủ (n/N) | Grounding 0/1/2 (số câu) và trung bình /2 |
+|---|---|---|---|---|
+| A | 1,10 (10) | 15/15 | 2/2 (không lọc; top-3 tự đúng ngôn ngữ) | 0/0/5 — **2,00** |
+| B | 1,10 (10) | 15/15 | 2/2 (không lọc; top-3 tự đúng ngôn ngữ) | 0/2/3 — 1,60 |
+| C | 1,10 (10) | 15/15 | 2/2 | 0/2/3 — 1,60 |
 
-Chấm cùng 10 vị trí đã cố định: ký tự 450 trên 5 trang đầu của mỗi tài liệu. Mỗi cấu hình có 10 chunk bao phủ các vị trí này. Thang điểm: 0 = không hiểu vì cắt/thiếu chủ thể; 1 = hiểu một phần nhưng thiếu ngữ cảnh hoặc cắt ý; 2 = tự hiểu được và trọn ý. Đánh giá toàn chunk, không chỉ một câu quanh điểm neo.
+**Coherence:** phân bố điểm 0/1/2 của cả A, B và C đều là **0 / 9 / 1**. Phần lớn chunk của cả hai cách chia đều bị cắt giữa câu hoặc giữa danh sách do giới hạn 900 ký tự. Ví dụ, chunk A ở trang 1 Nghị định 13 kết thúc ở "2. Nghị"; ở trang 4 bài báo, chunk dừng ngay giữa công thức.
 
-| Cấu hình | Số mẫu | Số mức 0 / 1 / 2 | Điểm trung bình /2 |
-|---|---:|---|---:|
-| A | 10 | 0 / 10 / 0 | 1,00 |
-| B | 10 | 0 / 9 / 1 | 1,10 |
-| C | 10 | 0 / 9 / 1 | 1,10 |
+**Grounding từng câu test:**
 
-B/C giữ trọn phần căn cứ trên trang đầu ND13 tốt hơn A, trong khi A kết thúc ở “2. Nghị”. Tuy vậy, phần lớn chunk vẫn cắt giữa câu hoặc danh sách do giới hạn 900 ký tự. Ở bài báo PDF 4, cả A và B/C dừng công thức tại dấu bằng; ở PDF 3, câu về kích thước output chưa trọn ý. B có fallback khi đoạn dài và PDF không giữ tốt dòng trống, nên tên “theo đoạn” không bảo đảm trọn nghĩa.
-
-Mẫu có điểm neo thuộc phần tác giả/căn cứ ở trang đầu, thiên lệch về đầu tài liệu. Không thay điểm neo sau khi xem kết quả. Nhãn và lý do từng dòng trong CSV cần người học rà lại; chưa được coi là hoàn thành tiêu chí chấm thủ công độc lập.
-
-## 4. Tính hữu dụng của metadata
-
-Đã đối chiếu 45 hit test (5 câu × top-3 × 3 cấu hình) với hai PDF: URL nguồn theo manifest, trang PDF, ngôn ngữ, năm và đoạn text ở ranh giới start/end đều khớp. Đây là kiểm tra bằng mã kết hợp rà evidence có AI hỗ trợ, chưa phải người học tự kiểm tra từng bản ghi.
-
-| Cấu hình | Metadata được đối chiếu đúng / số hit | Câu dev tuân thủ phạm vi filter | Câu test tuân thủ phạm vi filter |
-|---|---:|---:|---:|
-| A | 15/15 | 3/3 | 2/2 |
-| B | 15/15 | 3/3 | 2/2 |
-| C | 15/15 | 3/3 | 2/2 |
-
-A/B không thực thi filter, nhưng các kết quả quan sát vẫn đúng ngôn ngữ được yêu cầu. Vì vậy chưa có bằng chứng filter giúp tăng điểm. C bảo đảm điều kiện ngôn ngữ ở truy vấn; trong cả 5 câu test, thứ tự và nội dung top-3 B/C cũng giống nhau.
-
-`source` và `page` giúp kiểm tra lại bằng chứng, `language` cho phép giới hạn phạm vi. Tuy nhiên, metadata đúng không đồng nghĩa nội dung hữu ích: ở Q10 của B/C, cả ba hit chỉ có tiêu đề Công báo. Không nhầm ngày in Công báo với ngày hiệu lực của nghị định.
-
-## 5. Chất lượng grounding — nhãn AI đề xuất
-
-Đọc toàn bộ top-3 cho cùng 5 câu test, đánh giá đủ bằng chứng trả lời và truy nguồn: 0 = không có evidence trả lời; 1 = có nhưng thiếu ý/điều kiện; 2 = đủ. Không suy nhãn này trực tiếp từ exact match; đã đọc nội dung các hit. Các điểm dưới đây vẫn chờ người học xác nhận.
-
-| Câu test | A | B | C | Bằng chứng/lỗi chính |
+| Câu | A | B | C | Lý do (người chấm) |
 |---|---:|---:|---:|---|
-| Q08 — cơ quan, 72 giờ, thông báo muộn | 2 | 2 | 2 | Top-1 ở ND13 PDF 18 đủ cả ba ý |
-| Q09 — thời điểm áp dụng biện pháp bảo vệ | 2 | 2 | 2 | A top-2, B/C top-1 ở ND13 PDF 23 đủ ý |
-| Q10 — ngày bắt đầu hiệu lực Điều 43 | 2 | 0 | 0 | A top-1 PDF 29; B/C chỉ trả tiêu đề Công báo |
-| Q19 — label smoothing và tác động | 2 | 2 | 2 | Top-2 bài báo PDF 8 nêu 0.1 và đủ tác động |
-| Q20 — số checkpoint và khoảng thời gian | 2 | 0 | 0 | A top-3 PDF 8 đủ; B/C thiếu đoạn cần thiết |
-| **Trung bình /2** | **2,00** | **1,20** | **1,20** | |
+| Q08 | 2 | 2 | 2 | Cả hai đều có Điều 23 khoản 1: cơ quan nhận thông báo, thời hạn 72 giờ, giải trình khi thông báo muộn |
+| Q09 | 2 | 1 | 1 | A: chunk [2] trang 23 (Điều 26 khoản 1) chứa nguyên văn đáp án; B/C: thông tin bị cắt |
+| Q10 | 2 | 2 | 2 | Cả hai chứa nguyên văn, khớp đáp án |
+| Q19 | 2 | 2 | 2 | Chunk [2] trang 8: label smoothing 0.1, giảm perplexity nhưng tăng accuracy/BLEU |
+| Q20 | 2 | 1 | 1 | A: chunk [3] trang 8 nêu 5 checkpoint cuối, cách nhau 10 phút; B/C: bị cắt câu |
 
-Phân bố mức 0/1/2: A = 0/0/5; B = 2/0/3; C = 2/0/3. Ở Q20, đoạn “no checkpoint averaging” mà B/C trả về thuộc thí nghiệm biến thể ở trang 9, không trả lời câu hỏi về base model ở trang 8. Cần phân biệt ngữ cảnh để không đưa ra câu trả lời sai dù từ khóa tương đồng.
+**Metadata:** cả 45 bản ghi (5 câu test × top-3 × 3 cấu hình) đều có `source`, `page`, `year`, `language` khớp manifest và trang nguồn. Có 6 bản ghi metadata đúng nhưng **nội dung chunk không đủ để trả lời** (A: Q08 rank 2 và 3, Q09 rank 3, Q10 rank 1; B/C: Q09 rank 1). Như vậy, metadata đúng chưa có nghĩa là chunk hữu ích.
 
-## 6. Tài nguyên và tác động của chiến lược
-
-Số đo từ `ingestion_stats.json`, lần ingest đầu; thời gian tổng gồm **hai lượt upsert** phục vụ kiểm tra idempotency, không phải latency truy vấn.
+**Tài nguyên** (lấy từ `ingestion_stats.json`):
 
 | Đại lượng | A | B | C |
 |---|---:|---:|---:|
 | Số chunk | 121 | 137 | 137 |
 | Tổng ký tự chunk | 93.832 | 81.295 | 81.295 |
 | Độ dài nhỏ nhất / trung vị / lớn nhất | 185 / 899 / 900 | 9 / 890 / 899 | 9 / 890 / 899 |
-| Chia chunk + embedding (giây) | 4,005 | 5,025 | ~0,000003 (tái sử dụng) |
-| Tổng gồm hai upsert (giây) | 4,480 | 5,537 | 0,479 |
-| Token API embedding mới | 39.264 | 33.011 | 0 |
-| Đoạn lấy từ cache | 0 | 4 | Dùng lại vector B |
+| Tổng thời gian gồm hai lượt upsert (s) | 4,480 | 5,537 | 0,479 |
 | Số bản ghi sau hai lần nạp | 121 → 121 | 137 → 137 | 137 → 137 |
 
-A có overlap nên tổng ký tự gửi xử lý nhiều hơn B, dù ít chunk hơn. B tạo cả những chunk rất ngắn: min 9 ký tự; lỗi Q10 minh họa rủi ro các mẩu header thiếu nội dung được xếp hạng cao. Giải thích này dựa vào evidence đã thấy, không khẳng định đó là nguyên nhân duy nhất của mọi chênh lệch.
+**Đường dẫn trace, nhãn thủ công và cách chọn mẫu:**
+- Trace: `starter/results/lab06_api/traces_dev.json`, `traces_test.json`; chỉ số: `metrics.json`; tài nguyên: `ingestion_stats.json`.
+- Nhãn: `starter/results/lab06_api/manual_review.csv`, gồm 90 dòng, mỗi dòng có điểm và lý do. Công cụ hỗ trợ chấm: `starter/scripts/label_review.py`.
+- Coherence: 10 vị trí được cố định trước khi xem điểm (ký tự thứ 450 trên 5 trang đầu của mỗi tài liệu), áp dụng giống nhau cho cả 3 cấu hình. Mẫu này thiên về phần đầu tài liệu.
+- Metadata và grounding: 5 câu test × top-3. Metadata được đối chiếu với manifest và text trang, có gợi ý tự động hỗ trợ.
+- **Người chấm là tác giả**, nên có nguy cơ thiên lệch. Với C, nhãn của B được dùng lại vì chunk và top-3 giống hệt nhau.
 
-C không tạo embedding mới vì dùng lại B. Thời gian gần bằng 0 của bước chia/embedding C không chứng minh thuật toán C tự thân nhanh hơn: đây là phép tái sử dụng có chủ đích. Thời gian A/B là một lần chạy và B có 4 cache hits, nên chưa phải benchmark tốc độ độc lập có kiểm soát.
+## Phân tích và kết luận
 
-**Chi phí:** ghi nhận **72.275 token embedding tài liệu mới** trong lần ingest đầu (39.264 + 33.011). Chưa bao gồm embedding câu hỏi, kiểm tra kết nối và các lần chạy khác. Chưa có toàn bộ `usage_*.json` hoặc billing, nên chưa xác định tổng tiền thực trả. Công thức cho riêng phần token này là `72.275 / 1.000.000 × đơn giá áp dụng cho 1 triệu token`; không ghi API cost bằng 0. Không thay tổng token này bằng tổng chi phí toàn bài.
+- **So sánh A–B (thay chunking):** A truy xuất tốt hơn: Hit@3 dev 11/15 so với 10/15, test 5/5 so với 3/5; Hit@1 bằng nhau. Grounding A đạt 2,00/2. B chỉ đạt 1,60/2 vì có 2 câu mà evidence bị cắt ở ranh giới chunk. Overlap 150 ký tự giúp A giữ được trọn câu nằm ở ranh giới. Coherence bằng nhau (1,10/2): chia "theo đoạn" chưa giúp trọn ý, vì PDF không giữ dòng trống ổn định và B có bước tách dự phòng cho đoạn dài. Metadata của cả hai đều đúng 15/15, nên cách chunk không ảnh hưởng đến khả năng truy vết. Về tài nguyên, A tốn nhiều ký tự và token hơn (93.832 ký tự, 39.264 token so với 81.295 ký tự, 33.011 token) dù ít chunk hơn. B sinh ra cả những chunk rất ngắn (ngắn nhất 9 ký tự, chủ yếu là mẩu header).
+- **So sánh B–C (chỉ thay filter):** mọi chỉ số giống hệt nhau, và top-3 của B và C trùng nhau ở cả 5 câu test. Ngay cả khi không lọc, kết quả của B đã tuân thủ filter (3/3 câu dev, 2/2 câu test), vì truy vấn tiếng Việt tự trả về Nghị định 13 và truy vấn tiếng Anh tự trả về bài báo. Mỗi giá trị `language`/`year` chỉ ứng với một tài liệu, nên filter thực chất là chọn tài liệu, và **chưa có bằng chứng filter cải thiện kết quả** trên corpus này. Metadata vẫn hữu ích cho việc truy vết: `source` và `page` dẫn thẳng đến trang PDF để kiểm chứng.
+- **Hai ví dụ sai:**
+  1. **Q09** (test, gold: Nghị định 13 trang 23, Điều 26 khoản 1). A có nguyên văn đáp án ở chunk [2]. Ở B/C, chunk chứa evidence bị cắt nên thiếu thông tin (grounding 1).
+  2. **Q20** (test, gold: bài báo trang 8). A có đủ thông tin "5 checkpoint cuối, cách nhau 10 phút" ở chunk [3]. Ở B/C, câu chứa evidence bị cắt (grounding 1).
+- **Chiến lược chọn: A**, theo đúng tiêu chí đã chốt: Hit@3 dev cao nhất (11/15), Hit@1 bằng nhau, ít chunk hơn (121 so với 137). Kết quả test (Hit@3 5/5, grounding 2,00) nhất quán với lựa chọn này nhưng không được dùng để chỉnh cấu hình. Đánh đổi: overlap làm tăng khoảng 19% số token embedding. Điều kiện áp dụng: corpus nhỏ, ưu tiên độ phủ evidence.
+- **Hạn chế:** test chỉ có 5 câu (chênh 1 câu tương đương 20 điểm %) và dev chỉ chênh 1 câu, nên khác biệt A–B chưa chắc có ý nghĩa thống kê. Hai tài liệu khác hẳn nhau về chủ đề và ngôn ngữ, nên filter dễ tuân thủ ngay cả khi không lọc. Nhãn do một người chấm, cũng là tác giả. Mẫu coherence thiên về đầu tài liệu. Thời gian chỉ đo một lần chạy và B có 4 lượt lấy từ cache, nên chưa phải benchmark tốc độ có kiểm soát. Chi phí chỉ là ước tính từ số token. Kết luận chỉ áp dụng cho corpus này.
+- **Nếu làm lại hoặc mở rộng:** bỏ header/footer Công báo; ghép hoặc loại chunk quá ngắn; chunk theo Điều/Khoản cho văn bản luật; xử lý công thức và bảng; xây corpus cùng ngôn ngữ nhưng khác năm hoặc phiên bản để filter có tác dụng thật; mở rộng tập test, tạo tập test mới cho các thay đổi trên thay vì dùng lại test hiện tại; thử hybrid BM25.
 
-## 7. Lựa chọn, giới hạn và tái lập
+## Tái lập
 
-Chọn A theo dev: Hit@3 cao nhất và số chunk thấp hơn. B/C nhỉnh hơn 0,1 điểm coherence trong mẫu AI đề xuất, nhưng không bù được lợi thế retrieval của A. Dữ liệu hai chủ đề và hai ngôn ngữ cách biệt làm filter dễ tuân thủ ngay cả khi không áp dụng, lệch gợi ý corpus chủ đề hẹp. Test chỉ 5 câu, chia trong cùng corpus, phần chấm định tính chưa xác nhận độc lập, nên không suy rộng lựa chọn ra các bộ dữ liệu khác.
-
-Nghị định 13 được dùng như snapshot lịch sử; đã hết hiệu lực từ 01/01/2026 theo khoản 2 Điều 42 NĐ356/2025. Câu hỏi chỉ hỏi nội dung văn bản này, không tư vấn pháp luật hiện hành. Giữ checksum của bản bài báo đã sử dụng; không mặc định URL arXiv luôn trả cùng phiên bản.
-
-Các hướng cải thiện cho **thí nghiệm sau**: bỏ header/footer, loại hoặc ghép chunk ngắn thiếu ngữ nghĩa, chia theo điều/khoản hoặc câu, cải thiện xử lý bảng/công thức, xây corpus có phạm vi gần nhau để đo filter. Không áp dụng các thay đổi này lên test hiện tại rồi báo như lần đánh giá chưa từng thấy.
-
-Lệnh chạy từ `starter/`:
+Chạy từ thư mục `starter/`. Cần file `.env` có `OPENAI_API_KEY` (xem `.env.example`) và tải PDF theo URL trong manifest.
 
 ```bash
+docker compose up -d
 python -u -m src.run --check
 python -u -m src.run --split dev
 python -u -m src.run --split test
+python3 scripts/label_review.py --summary
 ```
 
-Nộp kèm mã nguồn, manifest, benchmark, `metrics.json`, `traces_dev.json`, `traces_test.json`, `ingestion_stats.json`, `experiment_lock.json`, `runtime.json`, các log usage và mẫu review. `.env` và cache vector không đưa vào git. Phiên bản backend/thư viện xem `runtime.json` của máy chạy; báo cáo này không tự điền phiên bản chưa được cung cấp.
+Nạp lại không tạo bản ghi trùng: dữ liệu được upsert theo `chunk_id` ổn định, và số bản ghi sau hai lần nạp không đổi (121 → 121, 137 → 137). `.env`, PDF và cache embedding không đưa vào git.
 
-**Lưu ý cập nhật:** đây là báo cáo phân tích bổ sung, giữ tên `REPORT_FINAL.md`. Lệnh `--report-only` chỉ tái sinh `REPORT.md` mẫu và không cập nhật nội dung phân tích này. Nếu người học đổi nhãn, cần sửa bảng tổng hợp định tính tương ứng và ghi trạng thái xác nhận.
+## Sử dụng AI
 
-## Nguồn và minh chứng
-
-- `REPORT.md` người học gửi: số đo retrieval dev/test; `ingestion_stats.json`: số đo tài nguyên.
-- `manual_evidence.md`: 30 chunk coherence và top-3 của 15 lượt test; `manual_review.csv`: mẫu nhãn ban đầu trống.
-- `manual_review_ai_suggested.csv`: 90 dòng nhãn/lý do đề xuất, ghi rõ AI-assisted và pending_human_review.
-- Nghị định 13 bản Công báo: https://congbao.cdnchinhphu.vn/CongBaoCP/VanBan/2023/4/39228/44543-1-2023685-68613-2023-nd-cp.pdf
-- Vaswani et al., *Attention Is All You Need*: https://arxiv.org/pdf/1706.03762
-- NĐ356/2025, Điều 42 (chỉ để xác định trạng thái văn bản, không thuộc corpus): https://datafiles.chinhphu.vn/cpp/files/vbpq/2026/01/356-nd.signed.pdf
-
-Chỉ nộp/phát hành nội dung nguồn trong phạm vi được phép; không tự gán giấy phép CC cho bài báo. Việc nhãn được AI đề xuất đã được công bố; cần người học kiểm tra để hoàn tất phần chấm thủ công mà đề yêu cầu.
+Dùng ChatGPT và Claude để hỗ trợ viết code, soạn benchmark và trình bày báo cáo. Tác giả đã chạy pipeline, kiểm tra evidence và **tự chấm toàn bộ 90 nhãn thủ công**; nhãn do AI đề xuất trước đó đã bị loại, không dùng trong báo cáo này. Mọi số liệu lấy từ các file kết quả của lần chạy thật.
