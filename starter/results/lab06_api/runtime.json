@@ -1,0 +1,22 @@
+{
+  "python": "3.14.0 (main, Oct  7 2025, 09:34:52) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "packages": {
+    "pypdf": "6.21.4",
+    "psycopg": "3.3.8",
+    "python-dotenv": "1.2.4",
+    "postgres": "15.17",
+    "pgvector": "0.8.7"
+  },
+  "config": {
+    "model": "text-embedding-3-small",
+    "dimensions": 1536,
+    "A_size": 900,
+    "A_overlap": 150,
+    "B_max_size": 900,
+    "top_k": 3,
+    "search": "exact cosine pgvector",
+    "selection_rule": "Choose using dev Hit@3, then dev Hit@1, then lower chunk count; report manual test labels separately.",
+    "split_rule": "Fixed 15 dev/5 test before any retrieval; no test-guided changes."
+  }
+}

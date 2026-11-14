@@ -1,0 +1,10 @@
+{
+  "utc": "20261114T031622908531Z",
+  "split": "dev",
+  "seconds": 19.076328166993335,
+  "new_api_tokens": 72756,
+  "successful_api_calls": 24,
+  "cache_hits": 4,
+  "cost_usd": null,
+  "cost_note": "Use account billing/current price; not zero, not yet measured."
+}
